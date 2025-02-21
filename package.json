@@ -6,9 +6,14 @@
       "packages/*"
     ],
     "scripts": {
-      "dev:frontend": "yarn workspace frontend dev",
-      "dev:admin": "yarn workspace admin dev",
-      "build:frontend": "yarn workspace frontend build",
-      "build:admin": "yarn workspace admin build"
-    }
+    "dev:frontend": "yarn workspace frontend dev",
+    "dev:admin": "yarn workspace admin dev",
+    "build:frontend": "yarn workspace frontend build",
+    "build:admin": "yarn workspace admin build",
+    "build:packages": "yarn workspace database build",
+    "build": "yarn build:packages && yarn build:frontend && yarn build:admin"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.4"
   }
+}

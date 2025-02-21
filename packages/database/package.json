@@ -1,6 +1,19 @@
 {
   "name": "database",
-  "version": "1.0.0",
-  "main": "index.js",
-  "license": "MIT"
+  "version": "0.0.1",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsup src/index.ts --format esm,cjs --dts --tsconfig tsconfig.json",
+    "dev": "tsup src/index.ts --format esm,cjs --watch --dts --tsconfig tsconfig.json",
+    "lint": "eslint src/**/*.ts*"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.0"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.1",
+    "typescript": "^5.0.4",
+    "@swc/core": "^1.3.107"
+  }
 }

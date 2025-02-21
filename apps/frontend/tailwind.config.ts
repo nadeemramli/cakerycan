@@ -1,6 +1,7 @@
 import type { Config } from "tailwindcss";
+import { tokens } from './src/styles/design-tokens';
 
-export default {
+const config: Config = {
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -9,10 +10,17 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        background: tokens.colors.background,
+        text: tokens.colors.text,
+        border: tokens.colors.border,
+      },
+      fontFamily: {
+        sans: [tokens.typography.fonts.body],
+        display: [tokens.typography.fonts.display],
       },
     },
   },
   plugins: [],
-} satisfies Config;
+};
+
+export default config;
