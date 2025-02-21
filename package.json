@@ -1,0 +1,14 @@
+{
+    "name": "cakerycan",
+    "private": true,
+    "workspaces": [
+      "apps/*",
+      "packages/*"
+    ],
+    "scripts": {
+      "dev:frontend": "yarn workspace frontend dev",
+      "dev:admin": "yarn workspace admin dev",
+      "build:frontend": "yarn workspace frontend build",
+      "build:admin": "yarn workspace admin build"
+    }
+  }
