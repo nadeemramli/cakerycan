@@ -4,14 +4,9 @@ import { type Region } from "./locationData";
 interface DeliveryInfoProps {
   region: Region;
   children: React.ReactNode;
-  onProceed: (region: Region) => void;
 }
 
-export function DeliveryInfo({
-  region,
-  children,
-  onProceed,
-}: DeliveryInfoProps) {
+export function DeliveryInfo({ region, children }: DeliveryInfoProps) {
   return (
     <HoverCard.Root openDelay={0} closeDelay={0}>
       <HoverCard.Trigger asChild>{children}</HoverCard.Trigger>
@@ -27,12 +22,6 @@ export function DeliveryInfo({
               <p className="font-medium">Delivery Schedule</p>
               <p className="mt-1 text-gray-600">{region.deliveryInfo}</p>
             </div>
-            <button
-              onClick={() => onProceed(region)}
-              className="mt-2 rounded-md bg-pink-600 px-4 py-2 text-sm font-medium text-white hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2"
-            >
-              Proceed Order
-            </button>
           </div>
           <HoverCard.Arrow className="fill-white" />
         </HoverCard.Content>

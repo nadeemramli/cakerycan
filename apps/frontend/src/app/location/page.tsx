@@ -1,17 +1,27 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { SelangorMap } from "@/components/location/SelangorMap";
 import type { Region } from "@/components/location/locationData";
+import { MapPin, Calendar, ArrowRight } from "lucide-react";
+import { useCartStore } from "@/lib/store/cart-store";
 
 export default function LocationPage() {
   const [selectedRegion, setSelectedRegion] = useState<Region | null>(null);
+  const router = useRouter();
+  const { setRegion } = useCartStore();
 
   const handleRegionSelect = (region: Region) => {
     setSelectedRegion(region);
-    // Here you can add logic to save the region to form state
-    // or navigate to the order form with the region pre-selected
-    console.log("Selected region:", region);
+  };
+
+  const handleProceedOrder = () => {
+    if (selectedRegion) {
+      // Store the selected region in cart store
+      setRegion(selectedRegion);
+      router.push("/order");
+    }
   };
 
   return (
@@ -29,11 +39,43 @@ export default function LocationPage() {
       </div>
 
       {selectedRegion && (
-        <div className="mt-8 p-4 bg-pink-50 rounded-lg">
-          <h2 className="text-xl font-semibold text-gray-900">
-            Selected Region: {selectedRegion.name}
-          </h2>
-          <p className="mt-2 text-gray-600">{selectedRegion.deliveryInfo}</p>
+        <div className="mt-8 bg-white rounded-xl shadow-lg p-8">
+          <div className="flex flex-col gap-6">
+            <div className="flex items-start gap-4">
+              <MapPin className="h-6 w-6 text-pink-600 mt-1" />
+              <div>
+                <h2 className="text-xl font-semibold text-gray-900">
+                  {selectedRegion.name}
+                </h2>
+                <p className="mt-2 text-gray-600">
+                  {selectedRegion.deliveryInfo}
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-4">
+              <Calendar className="h-6 w-6 text-pink-600 mt-1" />
+              <div>
+                <h3 className="font-semibold text-gray-900">
+                  Delivery Schedule
+                </h3>
+                <p className="mt-2 text-gray-600">
+                  Deliveries to {selectedRegion.name} are scheduled for{" "}
+                  <span className="font-medium">
+                    {selectedRegion.deliveryDay}
+                  </span>
+                </p>
+              </div>
+            </div>
+
+            <button
+              onClick={handleProceedOrder}
+              className="mt-4 w-full flex items-center justify-center gap-2 bg-pink-600 text-white px-6 py-3 rounded-lg hover:bg-pink-700 transition-colors"
+            >
+              <span>Proceed with Order</span>
+              <ArrowRight className="h-5 w-5" />
+            </button>
+          </div>
         </div>
       )}
     </main>

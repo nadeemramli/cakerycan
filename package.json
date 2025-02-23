@@ -2,18 +2,23 @@
     "name": "cakerycan",
     "private": true,
     "workspaces": [
-      "apps/*",
-      "packages/*"
+        "apps/*",
+        "packages/*"
     ],
     "scripts": {
-    "dev:frontend": "yarn workspace frontend dev",
-    "dev:admin": "yarn workspace admin dev",
-    "build:frontend": "yarn workspace frontend build",
-    "build:admin": "yarn workspace admin build",
-    "build:packages": "yarn workspace database build",
-    "build": "yarn build:packages && yarn build:frontend && yarn build:admin"
-  },
-  "devDependencies": {
-    "typescript": "^5.0.4"
-  }
+        "dev:frontend": "yarn workspace frontend dev",
+        "dev:admin": "yarn workspace admin dev",
+        "build:frontend": "yarn workspace frontend build",
+        "build:admin": "yarn workspace admin build",
+        "build:packages": "yarn workspace database build",
+        "build": "yarn build:packages && yarn build:frontend && yarn build:admin"
+    },
+    "devDependencies": {
+        "typescript": "^5.0.4"
+    },
+    "dependencies": {
+        "@radix-ui/react-hover-card": "^1.1.6",
+        "lucide-react": "^0.475.0",
+        "zustand": "^5.0.3"
+    }
 }
