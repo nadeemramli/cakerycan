@@ -16,7 +16,8 @@
     "react-simple-maps": "3.0.0",
     "tailwind-merge": "^3.0.1",
     "topojson-client": "^3.1.0",
-    "ui": "*"
+    "ui": "*",
+    "zustand": "^5.0.3"
   },
   "scripts": {
     "dev": "next dev",
