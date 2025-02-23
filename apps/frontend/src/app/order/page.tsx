@@ -7,8 +7,36 @@ import { Section } from "@/components/ui/section";
 import { BuildYourOwnSection } from "@/components/order/build-your-own-section";
 import { CookieCare } from "@/components/order/cookie-care";
 import { useCartStore } from "@/lib/store/cart-store";
-import { ArrowRight, ShoppingBag, Check } from "lucide-react";
+import { ArrowRight, ShoppingBag } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { ProgressTracker } from "@/components/ui/progress-tracker";
+
+const CHECKOUT_STEPS = [
+  {
+    number: 1,
+    label: "Shopping basket",
+    status: "current" as const,
+    path: "/order",
+  },
+  {
+    number: 2,
+    label: "Personal details",
+    status: "upcoming" as const,
+    path: "/checkout",
+  },
+  {
+    number: 3,
+    label: "Shipping details",
+    status: "upcoming" as const,
+    path: "/shipping",
+  },
+  {
+    number: 4,
+    label: "Confirmation",
+    status: "upcoming" as const,
+    path: "/confirmation",
+  },
+];
 
 export default function OrderPage() {
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
@@ -23,39 +51,11 @@ export default function OrderPage() {
   return (
     <main>
       {/* Progress Tracker */}
-      <div className="border-b">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-center gap-3">
-            <div className="flex items-center gap-2">
-              <div className="h-8 w-8 rounded-full bg-green-500 text-white flex items-center justify-center">
-                <Check className="h-5 w-5" />
-              </div>
-              <span className="text-sm font-medium">Shopping basket</span>
-            </div>
-            <div className="w-16 h-[2px] bg-gray-200" />
-            <div className="flex items-center gap-2">
-              <div className="h-8 w-8 rounded-full border-2 border-gray-200 text-gray-400 flex items-center justify-center">
-                2
-              </div>
-              <span className="text-sm text-gray-400">Personal details</span>
-            </div>
-            <div className="w-16 h-[2px] bg-gray-200" />
-            <div className="flex items-center gap-2">
-              <div className="h-8 w-8 rounded-full border-2 border-gray-200 text-gray-400 flex items-center justify-center">
-                3
-              </div>
-              <span className="text-sm text-gray-400">Shipping details</span>
-            </div>
-            <div className="w-16 h-[2px] bg-gray-200" />
-            <div className="flex items-center gap-2">
-              <div className="h-8 w-8 rounded-full border-2 border-gray-200 text-gray-400 flex items-center justify-center">
-                4
-              </div>
-              <span className="text-sm text-gray-400">Confirmation</span>
-            </div>
-          </div>
-        </div>
-      </div>
+      <ProgressTracker
+        steps={CHECKOUT_STEPS}
+        currentStep={1}
+        showBackButton={false}
+      />
 
       {/* Hero Section with Product Showcase */}
       <ProductShowcase

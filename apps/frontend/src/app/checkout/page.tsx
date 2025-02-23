@@ -5,7 +5,34 @@ import { useRouter } from "next/navigation";
 import { Section } from "@/components/ui/section";
 import { CheckoutForm } from "@/components/order/checkout-form";
 import { useCartStore } from "@/lib/store/cart-store";
-import { Check } from "lucide-react";
+import { ProgressTracker } from "@/components/ui/progress-tracker";
+
+const CHECKOUT_STEPS = [
+  {
+    number: 1,
+    label: "Shopping basket",
+    status: "completed" as const,
+    path: "/order",
+  },
+  {
+    number: 2,
+    label: "Personal details",
+    status: "current" as const,
+    path: "/checkout",
+  },
+  {
+    number: 3,
+    label: "Shipping details",
+    status: "upcoming" as const,
+    path: "/shipping",
+  },
+  {
+    number: 4,
+    label: "Confirmation",
+    status: "upcoming" as const,
+    path: "/confirmation",
+  },
+];
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -23,44 +50,13 @@ export default function CheckoutPage() {
     // For now, we'll just simulate an API call
     await new Promise((resolve) => setTimeout(resolve, 1000));
     console.log("Order submitted:", data);
+    router.push("/shipping");
   };
 
   return (
     <main>
       {/* Progress Tracker */}
-      <div className="border-b">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-center gap-3">
-            <div className="flex items-center gap-2">
-              <div className="h-8 w-8 rounded-full bg-green-500 text-white flex items-center justify-center">
-                <Check className="h-5 w-5" />
-              </div>
-              <span className="text-sm font-medium">Shopping basket</span>
-            </div>
-            <div className="w-16 h-[2px] bg-green-200" />
-            <div className="flex items-center gap-2">
-              <div className="h-8 w-8 rounded-full bg-green-500 text-white flex items-center justify-center">
-                <Check className="h-5 w-5" />
-              </div>
-              <span className="text-sm font-medium">Personal details</span>
-            </div>
-            <div className="w-16 h-[2px] bg-gray-200" />
-            <div className="flex items-center gap-2">
-              <div className="h-8 w-8 rounded-full border-2 border-gray-200 text-gray-400 flex items-center justify-center">
-                3
-              </div>
-              <span className="text-sm text-gray-400">Shipping details</span>
-            </div>
-            <div className="w-16 h-[2px] bg-gray-200" />
-            <div className="flex items-center gap-2">
-              <div className="h-8 w-8 rounded-full border-2 border-gray-200 text-gray-400 flex items-center justify-center">
-                4
-              </div>
-              <span className="text-sm text-gray-400">Confirmation</span>
-            </div>
-          </div>
-        </div>
-      </div>
+      <ProgressTracker steps={CHECKOUT_STEPS} currentStep={2} />
 
       {/* Checkout Form */}
       <Section padding="large" background="subtle">
