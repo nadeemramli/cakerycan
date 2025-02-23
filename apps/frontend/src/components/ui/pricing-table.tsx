@@ -1,3 +1,7 @@
+import { useState } from "react";
+import { Sparkles } from "lucide-react";
+import { cn } from "@/lib/utils";
+
 interface PricingItem {
   title: string;
   description: string;
@@ -60,34 +64,63 @@ const PRICING_DATA: PricingSection[] = [
 ];
 
 export function PricingTable() {
+  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+
   return (
     <div className="max-w-4xl mx-auto">
-      <h2 className="text-4xl font-bold text-center text-purple-700 mb-2">
-        CAN SET
-      </h2>
-      <p className="text-center text-purple-600 mb-8">OFFICIAL MENU</p>
+      <div className="text-center animate-slide-up-fade">
+        <h2 className="text-4xl font-bold text-purple-700 mb-2 group">
+          CAN SET
+          <Sparkles className="inline-block ml-2 h-8 w-8 group-hover:animate-wiggle" />
+        </h2>
+        <p className="text-center text-purple-600 mb-8 animate-bounce-subtle">
+          OFFICIAL MENU ✨
+        </p>
+      </div>
 
       <div className="space-y-8">
         {PRICING_DATA.map((section) => (
           <div
             key={section.title}
-            className="bg-[#FFF5E6] rounded-2xl overflow-hidden"
+            className="bg-[#FFF5E6] rounded-2xl overflow-hidden transform transition-all duration-300 hover:shadow-xl"
           >
             <div className="p-6">
               <div className="flex justify-between items-center mb-4">
-                <h3 className="text-2xl font-bold">{section.title}</h3>
-                <div className="flex gap-8">
-                  <span>RM</span>
-                  <span>NP</span>
+                <h3 className="text-2xl font-bold animate-pulse-scale">
+                  {section.title}
+                </h3>
+                <div className="flex gap-8 font-semibold">
+                  <span className="animate-float">RM</span>
+                  <span
+                    className="text-red-600 animate-float"
+                    style={{ animationDelay: "0.1s" }}
+                  >
+                    NP
+                  </span>
                 </div>
               </div>
 
               <div className="space-y-4">
                 {section.items.map((item) => (
-                  <div key={item.title} className="flex justify-between">
+                  <div
+                    key={item.title}
+                    className={cn(
+                      "flex justify-between p-4 rounded-xl transition-all duration-300",
+                      hoveredItem === item.title
+                        ? "bg-purple-50 transform scale-102"
+                        : "hover:bg-purple-50 hover:transform hover:scale-102"
+                    )}
+                    onMouseEnter={() => setHoveredItem(item.title)}
+                    onMouseLeave={() => setHoveredItem(null)}
+                  >
                     <div>
-                      <h4 className="text-purple-700 font-semibold">
+                      <h4 className="text-purple-700 font-semibold group">
                         {item.title}
+                        {hoveredItem === item.title && (
+                          <span className="inline-block ml-2 animate-bounce-subtle">
+                            🍰
+                          </span>
+                        )}
                       </h4>
                       <p className="text-sm text-gray-600">
                         {item.description}
