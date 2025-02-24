@@ -2,44 +2,41 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
 
-const mainNavItems = [
-  { title: "Home", href: "/" },
-  {
-    title: "Browse Menu",
-    href: "/browse-menu",
-  },
-  { title: "Location", href: "/location" },
-  { title: "About Us", href: "/about-us" },
-];
-
-const helpNavItems = [
-  { title: "Pickup & Delivery", href: "/help/pickup-and-delivery" },
-  { title: "Cake Care", href: "/help/cake-care" },
-  { title: "FAQ", href: "/help/FAQ" },
-  { title: "Privacy Policy", href: "/help/privacy-policy" },
-  { title: "Terms of Services", href: "/help/terms-of-services" },
-  { title: "Refund Policy", href: "/help/refund-policy" },
+const links = [
+  { href: "/", label: "Home" },
+  { href: "/browse-menu", label: "Shop" },
+  { href: "/wedding-corporate", label: "Wedding & Corporate" },
+  { href: "/blog", label: "Read" },
+  { href: "/about-us", label: "Info" },
 ];
 
 export function MainNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="flex items-center space-x-8">
-      {mainNavItems.map((item) => (
-        <Link
-          key={item.href}
-          href={item.href}
-          className={`text-sm font-medium transition-colors hover:text-black/70 ${
-            pathname === item.href
-              ? "text-black font-semibold"
-              : "text-black/60"
-          }`}
-        >
-          {item.title}
-        </Link>
-      ))}
+    <nav>
+      <ul className="flex items-center space-x-1">
+        {links.map((link) => {
+          const isActive = pathname === link.href;
+          return (
+            <li key={link.href}>
+              <Link
+                href={link.href}
+                className={cn(
+                  "px-4 py-2 rounded-full text-sm font-medium transition-colors",
+                  isActive
+                    ? "bg-black/5 text-gray-900"
+                    : "text-gray-600 hover:text-gray-900 hover:bg-black/5"
+                )}
+              >
+                {link.label}
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
     </nav>
   );
 }

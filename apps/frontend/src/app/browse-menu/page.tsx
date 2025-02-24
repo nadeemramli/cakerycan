@@ -19,7 +19,7 @@ export default function BrowseMenuPage() {
             <ProductCategoryCard
               title="Ice Cream Cakes"
               description="Indulge in our signature ice cream cakes, crafted with love and premium ingredients"
-              imageSrc="/images/products/ice-cream-cake-preview.jpg"
+              imageSrc="/images/products/chocolate-cake-can.jpg"
               href="/browse-menu/ice-cream-cake"
             />
             <ProductCategoryCard

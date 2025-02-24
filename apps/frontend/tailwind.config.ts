@@ -11,12 +11,15 @@ const config: Config = {
     extend: {
       colors: {
         background: tokens.colors.background,
-        text: tokens.colors.text,
+        text: {
+          primary: "#573C2D",
+          secondary: "#8C6E5D",
+        },
         border: tokens.colors.border,
       },
       fontFamily: {
-        sans: [tokens.typography.fonts.body],
-        display: [tokens.typography.fonts.display],
+        sans: ["var(--font-instrument-sans)", "system-ui", "sans-serif"],
+        display: ["var(--font-bricolage)", "system-ui", "sans-serif"],
       },
       keyframes: {
         "scale-check": {

@@ -8,7 +8,9 @@ import { cn } from "@/lib/utils";
 import { PricingTable } from "@/components/ui/pricing-table";
 import { OrderFlow } from "@/components/ui/order-flow";
 import { SocialPresence } from "@/components/ui/social-presence";
-import { Heart, Cake, Sparkles } from "lucide-react";
+import { Heart, Cake, Sparkles, ChevronDown } from "lucide-react";
+import Image from "next/image";
+import { RevealFX } from "@/components/ui/reveal-fx";
 
 interface ActionButton {
   title: string;
@@ -24,7 +26,7 @@ export default function HomePage() {
   const { clearCart } = useCartStore();
 
   const handleFirstTimeOrder = () => {
-    clearCart(); // Clear any existing cart items
+    clearCart();
     router.push("/location");
   };
 
@@ -68,19 +70,41 @@ export default function HomePage() {
   ];
 
   return (
-    <main className="animate-slide-up-fade">
+    <>
       {/* Hero Section */}
-      <Section padding="large" background="primary">
-        <div className="text-center">
-          <div className="inline-block animate-float mb-6">
-            <Cake className="h-16 w-16 text-pink-600" />
-          </div>
-          <h1 className="text-4xl font-bold mb-4 animate-pulse-scale">
-            Welcome to CakeryCan
+      <Section
+        padding="none"
+        background="none"
+        noReveal
+        className="min-h-screen flex items-center justify-center relative overflow-hidden"
+      >
+        {/* Video Background */}
+        <div className="absolute inset-0 w-full h-full">
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover"
+          >
+            <source src="/hero-background.mp4" type="video/mp4" />
+          </video>
+          {/* Dark overlay */}
+          <div className="absolute inset-0 bg-black/40" />
+        </div>
+
+        <div className="container mx-auto px-4 text-center relative z-10">
+          <p className="font-serif text-lg mb-6 tracking-wide uppercase text-white">
+            Handmade with love
+          </p>
+
+          <h1 className="font-display text-6xl sm:text-7xl md:text-8xl font-bold mb-6 text-white">
+            CakeryCan
           </h1>
-          <p className="text-xl mb-8 animate-bounce-subtle">
-            Fresh baked goods delivered to your door
-            <span className="inline-block animate-wiggle ml-2">🧁</span>
+
+          <p className="text-xl md:text-2xl mb-12 max-w-2xl mx-auto text-white/90">
+            Fresh baked goods delivered to your door, bringing sweetness to your
+            everyday moments
           </p>
         </div>
       </Section>
@@ -93,26 +117,31 @@ export default function HomePage() {
             <span className="inline-block animate-bounce-subtle ml-2">✨</span>
           </h2>
           {actionButtons.map((button, index) => (
-            <button
-              key={index}
-              onClick={button.action}
-              className={cn(
-                "w-full p-6 rounded-xl text-left transition-all duration-300 transform hover:scale-105 hover:shadow-lg group",
-                button.className
-              )}
-            >
-              <div className="flex items-center gap-4">
-                <div className="group-hover:animate-wiggle">{button.icon}</div>
-                <div className="flex flex-col">
-                  <span className="text-lg font-semibold">{button.title}</span>
-                  {button.description && (
-                    <span className="text-sm opacity-90 mt-1">
-                      {button.description}
+            <RevealFX key={index} width="100%" delay={index * 0.1}>
+              <button
+                onClick={button.action}
+                className={cn(
+                  "w-full p-6 rounded-xl text-left transition-all duration-300 transform hover:scale-105 hover:shadow-lg group",
+                  button.className
+                )}
+              >
+                <div className="flex items-center gap-4">
+                  <div className="group-hover:animate-wiggle">
+                    {button.icon}
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-lg font-semibold">
+                      {button.title}
                     </span>
-                  )}
+                    {button.description && (
+                      <span className="text-sm opacity-90 mt-1">
+                        {button.description}
+                      </span>
+                    )}
+                  </div>
                 </div>
-              </div>
-            </button>
+              </button>
+            </RevealFX>
           ))}
         </div>
       </Section>
@@ -131,6 +160,6 @@ export default function HomePage() {
       <Section padding="large" background="subtle">
         <SocialPresence />
       </Section>
-    </main>
+    </>
   );
 }

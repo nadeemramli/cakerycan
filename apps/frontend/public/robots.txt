@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://cakerycan.com/sitemap.xml
+
+# Disallow admin and API routes
+Disallow: /api/*
+Disallow: /admin/*
+
+# Allow crawling of blog content
+Allow: /blog/* 

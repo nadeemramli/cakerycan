@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { tokens } from "@/styles/design-tokens";
+import { RevealFX } from "./reveal-fx";
 
 interface SectionProps {
   children: React.ReactNode;
@@ -10,6 +10,8 @@ interface SectionProps {
   background?: "default" | "subtle" | "primary" | "none";
   containerWidth?: "default" | "wide" | "narrow" | "full";
   padding?: "default" | "large" | "small" | "none";
+  floating?: boolean;
+  noReveal?: boolean;
 }
 
 export function Section({
@@ -19,12 +21,14 @@ export function Section({
   background = "default",
   containerWidth = "default",
   padding = "default",
+  floating = true,
+  noReveal = false,
 }: SectionProps) {
   // Background styles
   const backgroundStyles = {
-    default: "bg-background-main",
-    subtle: "bg-background-subtle",
-    primary: "bg-primary-100",
+    default: "bg-white/40 backdrop-blur-[2px]",
+    subtle: "bg-gray-50/30 backdrop-blur-[2px]",
+    primary: "bg-primary-100/40 backdrop-blur-[2px]",
     none: "",
   };
 
@@ -44,11 +48,12 @@ export function Section({
     none: "",
   };
 
-  return (
+  const sectionContent = (
     <section
       className={cn(
         backgroundStyles[background],
         paddingStyles[padding],
+        floating && "section-wrapper",
         className
       )}
     >
@@ -56,5 +61,17 @@ export function Section({
         {children}
       </div>
     </section>
+  );
+
+  // If noReveal is true or background is none, return without animation
+  if (noReveal || background === "none") {
+    return sectionContent;
+  }
+
+  // Wrap with RevealFX for animated sections
+  return (
+    <RevealFX width="100%" className="mb-8">
+      {sectionContent}
+    </RevealFX>
   );
 }
