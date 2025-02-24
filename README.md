@@ -84,6 +84,13 @@ yarn build            # Build everything
 # Handled automatically by Vercel
 ```
 
+## File Structure
+Database schema and migrations → /supabase/migrations
+TypeScript types and services → /packages/database
+Admin UI components → /apps/admin
+Frontend UI components → /apps/frontend
+
+
 ## Deployment
 
 This project is deployed to Vercel with the following setup:

@@ -57,7 +57,7 @@ DECLARE
 BEGIN
     -- For each ingredient in the recipe
     FOR current_producible IN
-        SELECT FLOOR(i.current_stock / r.quantity_required)::INTEGER
+        SELECT FLOOR(i.current_stock / NULLIF(r.quantity_required, 0))::INTEGER
         FROM recipes r
         JOIN inventory i ON i.ingredient_id = r.ingredient_id
         WHERE r.product_id = $1
@@ -72,32 +72,53 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Create function to update product status based on inventory
+-- Create function to update product status
 CREATE OR REPLACE FUNCTION update_product_status()
 RETURNS TRIGGER AS $$
 DECLARE
+    affected_products CURSOR FOR
+        SELECT DISTINCT p.id
+        FROM products p
+        JOIN recipes r ON r.product_id = p.id
+        WHERE 
+            CASE 
+                WHEN TG_TABLE_NAME = 'inventory' AND TG_OP IN ('INSERT', 'UPDATE') THEN r.ingredient_id = NEW.ingredient_id
+                WHEN TG_TABLE_NAME = 'recipes' AND TG_OP = 'UPDATE' THEN r.product_id = NEW.product_id
+                WHEN TG_TABLE_NAME = 'recipes' AND TG_OP = 'INSERT' THEN NEW.product_id = p.id
+                ELSE false
+            END;
+    
+    product_id UUID;
     producible_items INTEGER;
 BEGIN
-    -- Calculate how many items can be produced
-    producible_items := calculate_producible_items(NEW.product_id);
-    
-    -- Update the product's stock and status
-    UPDATE products
-    SET 
-        stock = producible_items,
-        status = CASE 
-            WHEN producible_items = 0 THEN 'out_of_stock'::product_status
-            WHEN producible_items <= 10 THEN 'low_stock'::product_status
-            ELSE 'in_stock'::product_status
-        END,
-        updated_at = CURRENT_TIMESTAMP
-    WHERE id = NEW.product_id;
+    -- Loop through all affected products
+    OPEN affected_products;
+    LOOP
+        FETCH affected_products INTO product_id;
+        EXIT WHEN NOT FOUND;
+        
+        -- Calculate how many items can be produced
+        producible_items := calculate_producible_items(product_id);
+        
+        -- Update the product's stock and status
+        UPDATE products
+        SET 
+            stock = producible_items,
+            status = CASE 
+                WHEN producible_items = 0 THEN 'out_of_stock'::product_status
+                WHEN producible_items <= 10 THEN 'low_stock'::product_status
+                ELSE 'in_stock'::product_status
+            END,
+            updated_at = CURRENT_TIMESTAMP
+        WHERE id = product_id;
+    END LOOP;
+    CLOSE affected_products;
     
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
--- Create triggers to update product status
+-- Create triggers
 CREATE TRIGGER update_product_status_on_inventory_change
 AFTER INSERT OR UPDATE OF current_stock
 ON inventory
@@ -113,4 +134,4 @@ EXECUTE FUNCTION update_product_status();
 -- Create indexes for better performance
 CREATE INDEX idx_recipes_product_id ON recipes(product_id);
 CREATE INDEX idx_recipes_ingredient_id ON recipes(ingredient_id);
-CREATE INDEX idx_inventory_ingredient_id ON inventory(ingredient_id); 
+CREATE INDEX idx_inventory_ingredient_id ON inventory(ingredient_id);

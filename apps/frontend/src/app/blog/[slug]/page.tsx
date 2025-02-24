@@ -4,11 +4,18 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Section } from "@/components/ui/section";
 import { Clock, Calendar, ArrowLeft } from "lucide-react";
-import { getBlogPost } from "@/lib/mdx";
+import { getBlogPost, getAllBlogPosts } from "@/lib/mdx";
 import { ShareButtons, ShareIcon } from "@/components/blog/share-buttons";
 
 interface Props {
   params: { slug: string };
+}
+
+export async function generateStaticParams() {
+  const posts = await getAllBlogPosts();
+  return posts.map((post) => ({
+    slug: post.slug,
+  }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

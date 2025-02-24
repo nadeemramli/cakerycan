@@ -28,10 +28,13 @@ export default async function BlogPage({ searchParams }: Props) {
 
   const allPosts = await getAllBlogPosts();
   const filteredPosts = category
-    ? allPosts.filter(
-        (post) => post.frontmatter.category === category.toLowerCase()
-      )
+    ? allPosts.filter((post) => post.frontmatter.category === category)
     : allPosts;
+
+  // Get unique categories for the filter
+  const categories = Array.from(
+    new Set(allPosts.map((post) => post.frontmatter.category))
+  );
 
   const featuredPost = allPosts[0]; // Always show the first post as featured
 
@@ -74,7 +77,7 @@ export default async function BlogPage({ searchParams }: Props) {
             >
               All Posts
             </Link>
-            {["tutorials", "recipes", "tips", "trends"].map((cat) => (
+            {categories.map((cat) => (
               <Link
                 key={cat}
                 href={`/blog?category=${cat}`}

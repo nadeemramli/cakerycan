@@ -48,7 +48,7 @@ export class AdminProductManagementService extends BaseProductManagementService 
         *,
         ingredients (name, unit)
       `)
-      .lte('current_stock', this.supabase.raw('low_stock_threshold'));
+      .filter('current_stock', 'lte', 'low_stock_threshold');
 
     if (error) throw error;
     return data;

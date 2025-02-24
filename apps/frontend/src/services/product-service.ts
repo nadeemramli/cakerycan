@@ -1,5 +1,4 @@
-import { createProductManagementService } from 'database';
-import type { ProductManagementService } from 'database/src/services/product-management';
+import { createProductManagementService, ProductManagementService } from 'database';
 
 export class CustomerProductService {
   private baseService: ProductManagementService;

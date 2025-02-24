@@ -1,12 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import { Section } from "@/components/ui/section";
-import { Home } from "lucide-react";
 
 export default function NotFound() {
   return (
-    <Section padding="large" background="subtle" className="min-h-[80vh]">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div className="relative w-48 h-48 mx-auto mb-8">
           <Image
@@ -24,13 +21,13 @@ export default function NotFound() {
           Looks like this page has been eaten! Don't worry, we have plenty more
           delicious content for you.
         </p>
-        <Link href="/">
-          <Button className="group">
-            <Home className="mr-2 h-4 w-4 transition-transform group-hover:-translate-y-0.5" />
-            Return Home
-          </Button>
+        <Link
+          href="/"
+          className="inline-flex items-center px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
+        >
+          Return Home
         </Link>
       </div>
-    </Section>
+    </div>
   );
 }
