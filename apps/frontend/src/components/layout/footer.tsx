@@ -38,71 +38,74 @@ export function Footer() {
 
       {/* Footer content */}
       <div className="bg-[#AD846C] relative">
-        <div className="container mx-auto py-16">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+        <div className="container mx-auto px-4 py-8 md:py-16">
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-12">
             {/* Logo Section */}
             <div className="md:col-span-3">
-              <Link href="/" className="inline-block">
+              <Link href="/" className="inline-block mb-6 md:mb-0">
                 <Logo size="md" />
               </Link>
             </div>
 
-            {/* About Section */}
-            <div className="md:col-span-3">
-              <h3 className="font-medium text-lg mb-4">About</h3>
-              <ul className="space-y-3">
-                {aboutLinks.map((link) => (
-                  <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      className="text-text-secondary hover:text-text-primary transition-colors text-sm"
-                    >
-                      {link.title}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            {/* Links Sections */}
+            <div className="grid grid-cols-2 gap-8 md:gap-4 md:col-span-9 md:grid-cols-3">
+              {/* About Section */}
+              <div>
+                <h3 className="font-medium text-lg mb-4 text-white">About</h3>
+                <ul className="space-y-3">
+                  {aboutLinks.map((link) => (
+                    <li key={link.href}>
+                      <Link
+                        href={link.href}
+                        className="text-white/80 hover:text-white transition-colors text-sm"
+                      >
+                        {link.title}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
 
-            {/* Help Section */}
-            <div className="md:col-span-3">
-              <h3 className="font-medium text-lg mb-4">Help</h3>
-              <ul className="space-y-3">
-                {helpLinks.map((link) => (
-                  <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      className="text-text-secondary hover:text-text-primary transition-colors text-sm"
-                    >
-                      {link.title}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
+              {/* Help Section */}
+              <div>
+                <h3 className="font-medium text-lg mb-4 text-white">Help</h3>
+                <ul className="space-y-3">
+                  {helpLinks.map((link) => (
+                    <li key={link.href}>
+                      <Link
+                        href={link.href}
+                        className="text-white/80 hover:text-white transition-colors text-sm"
+                      >
+                        {link.title}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
 
-            {/* Blog Section */}
-            <div className="md:col-span-3">
-              <h3 className="font-medium text-lg mb-4">Blog</h3>
-              <ul className="space-y-3">
-                {blogLinks.map((link) => (
-                  <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      className="text-text-secondary hover:text-text-primary transition-colors text-sm"
-                    >
-                      {link.title}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+              {/* Blog Section */}
+              <div>
+                <h3 className="font-medium text-lg mb-4 text-white">Blog</h3>
+                <ul className="space-y-3">
+                  {blogLinks.map((link) => (
+                    <li key={link.href}>
+                      <Link
+                        href={link.href}
+                        className="text-white/80 hover:text-white transition-colors text-sm"
+                      >
+                        {link.title}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           </div>
 
           {/* Social Links & Copyright */}
-          <div className="mt-16 pt-8 border-t border-border-light">
+          <div className="mt-8 md:mt-16 pt-8 border-t border-white/20">
             <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-              <div className="text-sm text-text-secondary">
+              <div className="text-sm text-white/80">
                 © 2024 CakeryCan. All rights reserved.
               </div>
               <div className="flex space-x-4">
@@ -110,7 +113,7 @@ export function Footer() {
                   href="https://facebook.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-text-secondary hover:text-text-primary transition-colors"
+                  className="text-white/80 hover:text-white transition-colors"
                 >
                   <Facebook className="h-5 w-5" />
                 </a>
@@ -118,7 +121,7 @@ export function Footer() {
                   href="https://instagram.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-text-secondary hover:text-text-primary transition-colors"
+                  className="text-white/80 hover:text-white transition-colors"
                 >
                   <Instagram className="h-5 w-5" />
                 </a>

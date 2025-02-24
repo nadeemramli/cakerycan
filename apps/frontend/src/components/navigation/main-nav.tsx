@@ -4,6 +4,10 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
+interface MainNavProps {
+  isMobile?: boolean;
+}
+
 const mainNavItems = [
   { title: "Home", href: "/" },
   { title: "Browse Menu", href: "/browse-menu" },
@@ -11,20 +15,26 @@ const mainNavItems = [
   { title: "About Us", href: "/about-us" },
 ];
 
-export function MainNav() {
+export function MainNav({ isMobile = false }: MainNavProps) {
   const pathname = usePathname();
 
   return (
-    <nav>
-      <ul className="flex items-center space-x-2">
+    <nav className={cn(isMobile && "flex flex-col space-y-1")}>
+      <ul
+        className={cn(
+          "flex items-center",
+          isMobile ? "flex-col space-y-1 w-full" : "space-x-2"
+        )}
+      >
         {mainNavItems.map((item) => {
           const isActive = pathname === item.href;
           return (
-            <li key={item.href}>
+            <li key={item.href} className={cn(isMobile && "w-full")}>
               <Link
                 href={item.href}
                 className={cn(
-                  "px-4 py-2 rounded-full text-sm font-medium transition-colors",
+                  "px-4 py-2 text-sm font-medium transition-colors block",
+                  isMobile ? "rounded-lg w-full" : "rounded-full",
                   isActive
                     ? "bg-black/5 text-gray-900"
                     : "text-gray-600 hover:text-gray-900 hover:bg-black/5"

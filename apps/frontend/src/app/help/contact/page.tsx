@@ -18,17 +18,16 @@ export default function ContactPage() {
       title: "WhatsApp",
       description:
         "Get quick responses about orders, availability, and general inquiries",
-      availability: "Available: 10am - 6pm (Tuesday - Sunday)",
+      availability: "Available: 9am - 6pm (Monday - Saturday)",
       action: {
         text: "Chat on WhatsApp",
-        href: "https://wa.me/60118085375",
+        href: "https://wa.me/60143434938",
       },
     },
     {
       icon: <TikTokIcon className="h-6 w-6" />,
       title: "TikTok Live",
-      description:
-        "Join our daily live sessions for real-time interaction and behind-the-scenes looks",
+      description: "Join our daily live sessions, we bake live on tiktok!",
       availability: "Daily Live: 2pm - 4pm",
       action: {
         text: "Follow us on TikTok",
@@ -51,10 +50,10 @@ export default function ContactPage() {
       icon: <Phone className="h-6 w-6" />,
       title: "Phone Support",
       description: "For urgent matters and immediate assistance",
-      availability: "Available: 10am - 6pm (Tuesday - Sunday)",
+      availability: "Available: 9am - 6pm (Monday - Saturday)",
       action: {
-        text: "Call +60 11-808 5375",
-        href: "tel:+60118085375",
+        text: "Call +60 14-343 4938",
+        href: "tel:+60143434938",
       },
     },
     {
@@ -68,12 +67,12 @@ export default function ContactPage() {
     },
     {
       icon: <Clock className="h-6 w-6" />,
-      title: "Store Visit",
-      description: "Visit our store in Bangsar for in-person assistance",
+      title: "Grab/Foodpanda",
+      description: "Order from our Grab/Foodpanda",
       availability: "Open: 10am - 6pm (Tuesday - Sunday)",
       action: {
-        text: "Get directions",
-        href: "/location",
+        text: "Order now",
+        href: "https://cakerycan.com/grab",
       },
     },
   ];
