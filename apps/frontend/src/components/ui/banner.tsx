@@ -28,7 +28,7 @@ export function Banner({
   return (
     <div
       className={cn(
-        "bg-pink-600 text-white py-2 px-4 text-center relative",
+        "bg-[#FF8D8D] text-white py-2 px-4 text-center relative",
         className
       )}
     >

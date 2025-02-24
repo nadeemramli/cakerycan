@@ -30,23 +30,23 @@ export function Header() {
         <div className="container mx-auto px-4">
           <div className="flex h-20 items-center justify-between">
             {/* Logo */}
-            <Link href="/" className="flex items-center">
+            <Link href="/" className="flex items-center relative z-10">
               <Logo size="sm" />
             </Link>
 
             {/* Main Navigation - 3D Container */}
-            <div className="flex-1 flex justify-center px-6">
-              <div className="bg-white/80 backdrop-blur-md shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] rounded-full px-6 py-2.5 border border-white/20">
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+              <div className="bg-[#F9F5F0]/65 backdrop-blur-md shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] rounded-full px-6 py-2.5 border border-white/20">
                 <MainNav />
               </div>
             </div>
 
             {/* Right side icons with 3D effect */}
-            <div className="flex items-center space-x-4">
-              <button className="bg-white/80 backdrop-blur-md shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] p-2.5 rounded-full border border-white/20 hover:bg-white/90 transition-colors">
+            <div className="flex items-center space-x-4 relative z-10">
+              <button className="bg-[#F9F5F0]/90 backdrop-blur-md shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] p-2.5 rounded-full border border-[#AD846C]/30 hover:bg-white/90 transition-colors">
                 <User className="h-5 w-5 text-gray-700" />
               </button>
-              <button className="bg-white/80 backdrop-blur-md shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] p-2.5 rounded-full border border-white/20 hover:bg-white/90 transition-colors relative">
+              <button className="bg-[#F9F5F0]/90 backdrop-blur-md shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] p-2.5 rounded-full border border-[#AD846C]/30 hover:bg-white/90 transition-colors relative">
                 <ShoppingCart className="h-5 w-5 text-gray-700" />
                 <span className="absolute -top-1 -right-1 bg-pink-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center border-2 border-white">
                   0
