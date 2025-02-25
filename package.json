@@ -1,22 +1,21 @@
 {
     "name": "cakerycan",
     "private": true,
+    "packageManager": "yarn@1.22.22",
     "workspaces": [
         "apps/*",
         "packages/*"
     ],
     "scripts": {
-        "dev:frontend": "yarn workspace frontend dev",
-        "dev:admin": "yarn workspace admin dev",
-        "build:frontend": "yarn workspace frontend build",
-        "build:admin": "yarn workspace admin build",
-        "build:packages": "yarn workspace database build",
-        "build": "yarn build:packages && yarn build:frontend && yarn build:admin"
+        "dev": "turbo run dev",
+        "build": "turbo run build",
+        "lint": "turbo run lint"
     },
     "devDependencies": {
         "typescript": "^5.0.4",
         "@types/ws": "^8.5.10",
-        "possible-typed-array-names": "^1.0.0"
+        "possible-typed-array-names": "^1.0.0",
+        "turbo": "latest"
     },
     "dependencies": {
         "@radix-ui/react-hover-card": "^1.1.6",

@@ -4,6 +4,8 @@ import { useState } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { AuthError } from "@supabase/supabase-js";
 import type { Database } from "database";
 import { useRouter } from "next/navigation";
@@ -60,48 +62,40 @@ export function LoginForm() {
   };
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Sign In</CardTitle>
+    <Card className="w-full">
+      <CardHeader className="space-y-1">
+        <CardTitle className="text-2xl font-bold text-center">
+          Sign In
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-700 dark:text-gray-200"
-            >
-              Email
-            </label>
-            <input
+          <div className="space-y-2">
+            <Label htmlFor="email">Email</Label>
+            <Input
               id="email"
               type="email"
+              placeholder="Enter your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700"
               required
+              disabled={isLoading}
             />
           </div>
-          <div>
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-700 dark:text-gray-200"
-            >
-              Password
-            </label>
-            <input
+          <div className="space-y-2">
+            <Label htmlFor="password">Password</Label>
+            <Input
               id="password"
               type="password"
+              placeholder="Enter your password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700"
               required
+              disabled={isLoading}
             />
           </div>
           {error && (
-            <div className="text-sm text-red-500 dark:text-red-400">
-              {error}
-            </div>
+            <div className="text-sm font-medium text-destructive">{error}</div>
           )}
           <Button type="submit" className="w-full" disabled={isLoading}>
             {isLoading ? "Signing in..." : "Sign in"}

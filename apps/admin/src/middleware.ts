@@ -28,7 +28,7 @@ export async function middleware(request: NextRequest) {
     if (path.startsWith("/dashboard")) {
       if (!session) {
         console.log("No session, redirecting to login");
-        return NextResponse.redirect(new URL("/login", request.url));
+        return NextResponse.redirect(new URL("/auth/login", request.url));
       }
 
       // Check if user has admin role using verify_admin_status
@@ -39,7 +39,7 @@ export async function middleware(request: NextRequest) {
 
       if (verifyError || !verifyData?.is_admin) {
         console.log("Not an admin, redirecting to login");
-        return NextResponse.redirect(new URL("/login", request.url));
+        return NextResponse.redirect(new URL("/auth/login", request.url));
       }
 
       // Admin with valid session accessing dashboard - allow
@@ -48,7 +48,7 @@ export async function middleware(request: NextRequest) {
     }
 
     // Handle auth routes (login)
-    if (path === "/login") {
+    if (path === "/auth/login") {
       if (session) {
         // Check if user is admin before redirecting
         const { data: verifyData, error: verifyError } = await supabase.rpc(
@@ -71,8 +71,8 @@ export async function middleware(request: NextRequest) {
   } catch (error) {
     console.error("Middleware error:", error);
     // Only redirect to login if not already on login page
-    if (request.nextUrl.pathname !== "/login") {
-      return NextResponse.redirect(new URL("/login", request.url));
+    if (request.nextUrl.pathname !== "/auth/login") {
+      return NextResponse.redirect(new URL("/auth/login", request.url));
     }
     return NextResponse.next();
   }
