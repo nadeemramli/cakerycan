@@ -6,10 +6,15 @@ import { tokens } from "@/styles/design-tokens";
 interface LogoProps {
   variant?: "default" | "light" | "dark";
   size?: "sm" | "md" | "lg" | "xl";
+  className?: string;
 }
 
 // This component will be updated when the actual logo is ready
-export function Logo({ variant = "default", size = "md" }: LogoProps) {
+export function Logo({
+  variant = "default",
+  size = "md",
+  className,
+}: LogoProps) {
   const sizes = {
     sm: { width: 120, height: 50 },
     md: { width: 180, height: 75 },
@@ -24,7 +29,7 @@ export function Logo({ variant = "default", size = "md" }: LogoProps) {
   };
 
   return (
-    <div className="flex flex-col items-start">
+    <div className={`flex flex-col items-start ${className || ""}`}>
       <div className="relative" style={sizes[size]}>
         <Image
           src="/brand-assets/logo.png" // Make sure to put your logo.png in the public/images directory

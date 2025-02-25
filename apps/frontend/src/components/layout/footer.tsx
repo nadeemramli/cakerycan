@@ -38,21 +38,22 @@ export function Footer() {
 
       {/* Footer content */}
       <div className="bg-[#AD846C] relative">
-        <div className="container mx-auto px-4 py-8 md:py-16">
+        <div className="container mx-auto px-4 sm:px-6 py-8 md:py-16">
           <div className="grid grid-cols-1 gap-8 md:grid-cols-12">
-            {/* Logo Section */}
-            <div className="md:col-span-3">
+            {/* Logo Section - Responsive */}
+            <div className="md:col-span-3 flex flex-col items-center md:items-start">
               <Link href="/" className="inline-block mb-6 md:mb-0">
-                <Logo size="xl" variant="light" />
+                <Logo size="sm" variant="light" className="block md:hidden" />
+                <Logo size="md" variant="light" className="hidden md:block" />
               </Link>
             </div>
 
-            {/* Links Sections */}
-            <div className="grid grid-cols-2 gap-8 md:gap-4 md:col-span-9 md:grid-cols-3">
+            {/* Links Sections - Improved mobile grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 md:gap-4 md:col-span-9">
               {/* About Section */}
-              <div>
+              <div className="flex flex-col items-center sm:items-start">
                 <h3 className="font-medium text-lg mb-4 text-white">About</h3>
-                <ul className="space-y-3">
+                <ul className="space-y-3 text-center sm:text-left">
                   {aboutLinks.map((link) => (
                     <li key={link.href}>
                       <Link
@@ -67,9 +68,9 @@ export function Footer() {
               </div>
 
               {/* Help Section */}
-              <div>
+              <div className="flex flex-col items-center sm:items-start">
                 <h3 className="font-medium text-lg mb-4 text-white">Help</h3>
-                <ul className="space-y-3">
+                <ul className="space-y-3 text-center sm:text-left">
                   {helpLinks.map((link) => (
                     <li key={link.href}>
                       <Link
@@ -84,9 +85,9 @@ export function Footer() {
               </div>
 
               {/* Blog Section */}
-              <div>
+              <div className="flex flex-col items-center sm:items-start">
                 <h3 className="font-medium text-lg mb-4 text-white">Blog</h3>
-                <ul className="space-y-3">
+                <ul className="space-y-3 text-center sm:text-left">
                   {blogLinks.map((link) => (
                     <li key={link.href}>
                       <Link
@@ -102,9 +103,9 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Social Links & Copyright */}
+          {/* Social Links & Copyright - Centered on mobile */}
           <div className="mt-8 md:mt-16 pt-8 border-t border-white/20">
-            <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+            <div className="flex flex-col items-center md:flex-row md:justify-between space-y-4 md:space-y-0">
               <div className="text-sm text-white/80">
                 © 2024 CakeryCan. All rights reserved.
               </div>

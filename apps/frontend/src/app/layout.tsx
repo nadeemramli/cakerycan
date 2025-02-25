@@ -32,12 +32,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${instrumentSans.variable} ${bricolageGrotesque.variable} font-sans antialiased min-h-screen flex flex-col`}
-        style={{
-          backgroundImage: 'url("/images/patterns/background.png")',
-          backgroundRepeat: "repeat",
-          backgroundSize: "auto",
-        }}
+        className={`${instrumentSans.variable} ${bricolageGrotesque.variable} font-sans antialiased min-h-screen flex flex-col bg-pattern`}
       >
         {/* Global page wrapper with 3D floating effect */}
         <div className="flex flex-col min-h-screen">
