@@ -8,12 +8,12 @@
 [34mCLI[39m Target: es5
 [34mESM[39m Build start
 [34mCJS[39m Build start
-[32mESM[39m [1mdist/index.mjs [22m[32m35.72 KB[39m
-[32mESM[39m ⚡️ Build success in 59ms
 [32mCJS[39m [1mdist/index.js [22m[32m38.86 KB[39m
-[32mCJS[39m ⚡️ Build success in 59ms
+[32mCJS[39m ⚡️ Build success in 36ms
+[32mESM[39m [1mdist/index.mjs [22m[32m35.72 KB[39m
+[32mESM[39m ⚡️ Build success in 36ms
 DTS Build start
-DTS ⚡️ Build success in 1250ms
+DTS ⚡️ Build success in 1268ms
 DTS dist/index.d.mts 9.06 KB
 DTS dist/index.d.ts  9.06 KB
 [2K[1GDone in 1.81s.

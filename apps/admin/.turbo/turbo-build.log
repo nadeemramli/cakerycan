@@ -32,4 +32,4 @@
 ○  (Static)   prerendered as static content
 λ  (Dynamic)  server-rendered on demand using Node.js
 
-[?25h[2K[1GDone in 20.03s.
+[?25h[2K[1GDone in 18.23s.
