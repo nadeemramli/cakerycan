@@ -9,6 +9,7 @@
     "scripts": {
         "dev": "turbo run dev",
         "build": "turbo run build",
+        "build:packages": "turbo run build --filter=./packages/*",
         "lint": "turbo run lint"
     },
     "devDependencies": {
