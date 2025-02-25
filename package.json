@@ -14,7 +14,9 @@
         "build": "yarn build:packages && yarn build:frontend && yarn build:admin"
     },
     "devDependencies": {
-        "typescript": "^5.0.4"
+        "typescript": "^5.0.4",
+        "@types/ws": "^8.5.10",
+        "possible-typed-array-names": "^1.0.0"
     },
     "dependencies": {
         "@radix-ui/react-hover-card": "^1.1.6",

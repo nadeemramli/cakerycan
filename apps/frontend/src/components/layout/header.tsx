@@ -30,10 +30,10 @@ export function Header() {
       {/* Sticky header */}
       <header className="sticky top-0 z-50">
         <div className="container mx-auto px-4">
-          <div className="flex h-20 items-center justify-between">
+          <div className="flex h-30 items-center justify-between">
             {/* Logo */}
             <Link href="/" className="flex items-center relative z-10">
-              <Logo size="sm" />
+              <Logo size="lg" />
             </Link>
 
             {/* Main Navigation - 3D Container - Hidden on mobile */}

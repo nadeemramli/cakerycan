@@ -43,7 +43,7 @@ export function Footer() {
             {/* Logo Section */}
             <div className="md:col-span-3">
               <Link href="/" className="inline-block mb-6 md:mb-0">
-                <Logo size="md" />
+                <Logo size="xl" variant="light" />
               </Link>
             </div>
 

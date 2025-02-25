@@ -14,16 +14,19 @@ export interface Database {
           id: string
           email: string
           created_at: string
+          role: 'admin' | 'customer'
         }
         Insert: {
           id?: string
           email: string
           created_at?: string
+          role?: 'admin' | 'customer'
         }
         Update: {
           id?: string
           email?: string
           created_at?: string
+          role?: 'admin' | 'customer'
         }
       }
       products: {
@@ -153,6 +156,21 @@ export interface Database {
       update_product_status: {
         Args: {
           product_id: string
+        }
+        Returns: void
+      }
+      verify_admin_status: {
+        Args: {
+          user_id: string
+        }
+        Returns: {
+          is_admin: boolean
+        }
+      }
+      set_user_role: {
+        Args: {
+          user_id: string
+          new_role: 'admin' | 'customer'
         }
         Returns: void
       }
