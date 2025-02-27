@@ -1,4 +1,0 @@
-{
-    "buildCommand": "cd ../.. && yarn install && yarn build:packages && cd apps/admin && yarn build",
-    "outputDirectory": ".next"
-  }

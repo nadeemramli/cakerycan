@@ -9,7 +9,7 @@ export * from './services';
 
 // Export factory functions
 import { createSupabaseClient } from './lib/client';
-import { AuthService } from './services/auth-service';
+import { AuthService } from './services/auth';
 import { ProductManagementService } from './services/product-management';
 
 export const createAuthService = () => {

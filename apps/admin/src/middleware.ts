@@ -1,80 +1,83 @@
 import { createMiddlewareClient } from "@supabase/auth-helpers-nextjs";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import type { Database } from "database";
+
+// Define public routes that don't need auth
+const publicRoutes = ['/login'];
+
+// Define static paths that should bypass auth
+const staticPaths = ['/_next', '/favicon.ico'];
+
+const isPublicPath = (pathname: string) =>
+  publicRoutes.includes(pathname) ||
+  staticPaths.some(path => pathname.startsWith(path));
 
 export async function middleware(request: NextRequest) {
+  const pathname = request.nextUrl.pathname;
+
+  // Skip auth check for public routes and static files
+  if (isPublicPath(pathname)) {
+    return NextResponse.next();
+  }
+
+  // Create a response to modify its headers
+  const res = NextResponse.next();
+
   try {
-    // Create a response to modify
-    const res = NextResponse.next();
-
-    // Create a Supabase client configured to use cookies
-    const supabase = createMiddlewareClient({ req: request, res });
-
-    // Refresh session if expired - this is key for maintaining the session
-    const {
-      data: { session },
-    } = await supabase.auth.getSession();
-
-    const path = request.nextUrl.pathname;
-
-    // Debug session state with more details
-    console.log("Middleware check:", { 
-      path,
-      hasSession: !!session,
-      userId: session?.user?.id,
+    // Initialize Supabase client with both request and response
+    const supabase = createMiddlewareClient<Database>({ 
+      req: request, 
+      res 
     });
 
-    // Handle protected routes (dashboard)
-    if (path.startsWith("/dashboard")) {
-      if (!session) {
-        console.log("No session, redirecting to login");
-        return NextResponse.redirect(new URL("/auth/login", request.url));
-      }
+    // Get the user directly instead of session for better security
+    const { data: { user }, error: userError } = await supabase.auth.getUser();
 
-      // Check if user has admin role using verify_admin_status
-      const { data: verifyData, error: verifyError } = await supabase.rpc(
-        'verify_admin_status',
-        { user_id: session.user.id }
-      );
-
-      if (verifyError || !verifyData?.is_admin) {
-        console.log("Not an admin, redirecting to login");
-        return NextResponse.redirect(new URL("/auth/login", request.url));
-      }
-
-      // Admin with valid session accessing dashboard - allow
-      console.log("Admin access granted to dashboard");
-      return res;
+    if (userError || !user) {
+      // Clear any existing session
+      await supabase.auth.signOut();
+      const redirectUrl = new URL('/login', request.url);
+      return NextResponse.redirect(redirectUrl);
     }
 
-    // Handle auth routes (login)
-    if (path === "/auth/login") {
-      if (session) {
-        // Check if user is admin before redirecting
-        const { data: verifyData, error: verifyError } = await supabase.rpc(
-          'verify_admin_status',
-          { user_id: session.user.id }
-        );
-
-        if (!verifyError && verifyData?.is_admin) {
-          console.log("Admin already logged in, redirecting to dashboard");
-          return NextResponse.redirect(new URL("/dashboard", request.url));
+    // Check for navigation state in cookies
+    const cookies = request.cookies;
+    const navState = cookies.get('auth_navigation');
+    
+    // Skip admin verification for recent navigations
+    if (pathname === '/dashboard' && navState?.value) {
+      try {
+        const { timestamp } = JSON.parse(navState.value);
+        if (Date.now() - timestamp < 5000) {
+          return res;
         }
+      } catch (e) {
+        console.error('Error parsing navigation state:', e);
       }
-      // Not logged in or not admin - allow access to login page
-      console.log("Allowing access to login page");
-      return res;
     }
 
-    // All other routes
+    // Verify admin status
+    const { data: verifyData, error: verifyError } = await supabase.rpc(
+      "verify_admin_status",
+      { user_id: user.id }
+    );
+
+    if (verifyError || !verifyData?.is_admin) {
+      // Sign out and redirect to login if not admin
+      await supabase.auth.signOut();
+      const redirectUrl = new URL('/login', request.url);
+      redirectUrl.searchParams.set('error', 'unauthorized');
+      return NextResponse.redirect(redirectUrl);
+    }
+
+    // User is authenticated and is an admin
     return res;
   } catch (error) {
-    console.error("Middleware error:", error);
-    // Only redirect to login if not already on login page
-    if (request.nextUrl.pathname !== "/auth/login") {
-      return NextResponse.redirect(new URL("/auth/login", request.url));
-    }
-    return NextResponse.next();
+    console.error("[Middleware] Error:", error);
+    const redirectUrl = new URL('/login', request.url);
+    redirectUrl.searchParams.set('error', 'server_error');
+    return NextResponse.redirect(redirectUrl);
   }
 }
 
@@ -86,6 +89,6 @@ export const config = {
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
      */
-    "/((?!_next/static|_next/image|favicon.ico).*)",
+    '/((?!_next/static|_next/image|favicon.ico).*)',
   ],
 }; 

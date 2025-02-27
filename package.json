@@ -13,14 +13,13 @@
         "lint": "turbo run lint"
     },
     "devDependencies": {
-        "typescript": "^5.0.4",
         "@types/ws": "^8.5.10",
         "possible-typed-array-names": "^1.0.0",
-        "turbo": "latest"
+        "turbo": "latest",
+        "typescript": "^5.0.4"
     },
     "dependencies": {
-        "@radix-ui/react-hover-card": "^1.1.6",
-        "lucide-react": "^0.475.0",
+        "@radix-ui/react-dialog": "^1.1.6",
         "zustand": "^5.0.3"
     }
 }

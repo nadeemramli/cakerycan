@@ -1,5 +1,5 @@
 import { SupabaseClient } from '@supabase/supabase-js';
-import type { Database } from '../../lib/types';
+import type { Database } from '../../types';
 import type { UserRole } from './types';
 
 export class AuthService {

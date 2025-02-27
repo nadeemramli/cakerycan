@@ -16,12 +16,60 @@ if (!supabaseUrl || !serviceRoleKey) {
   process.exit(1);
 }
 
-async function main() {
-  const email = process.argv[2];
-  const password = process.argv[3];
+interface User {
+  id: string;
+  email: string;
+  user_metadata: Record<string, any>;
+}
 
-  if (!email || !password) {
-    console.error("Usage: ts-node create-admin.ts <email> <password>");
+async function checkAdminStatus(supabase: any, email: string) {
+  console.log("Checking admin status for:", email);
+
+  // Get user by email
+  const { data: userData, error: userError } = await supabase.auth.admin.listUsers();
+  
+  if (userError) {
+    console.error("Error fetching users:", userError);
+    return false;
+  }
+
+  const user = userData.users.find((u: User) => u.email === email);
+  
+  if (!user) {
+    console.error("User not found with email:", email);
+    return false;
+  }
+
+  console.log("User found:", {
+    id: user.id,
+    email: user.email,
+    metadata: user.user_metadata
+  });
+
+  // Verify admin status
+  const { data: verifyData, error: verifyError } = await supabase.rpc(
+    'verify_admin_status',
+    { "user_id": user.id }
+  );
+
+  if (verifyError) {
+    console.error("Failed to verify admin status:", verifyError);
+    return false;
+  }
+
+  console.log("Admin verification result:", verifyData);
+  return verifyData.is_admin;
+}
+
+async function main() {
+  const isCheck = process.argv[2] === '--check';
+  const email = isCheck ? process.argv[3] : process.argv[2];
+  const password = isCheck ? null : process.argv[3];
+
+  if (!email || (!isCheck && !password)) {
+    console.error("Usage:");
+    console.error("  To create admin: ts-node create-admin.ts <email> <password>");
+    console.error("  To check status: ts-node create-admin.ts --check <email>");
     process.exit(1);
   }
 
@@ -32,6 +80,16 @@ async function main() {
       persistSession: false
     }
   });
+
+  if (isCheck) {
+    const isAdmin = await checkAdminStatus(supabase, email);
+    if (isAdmin) {
+      console.log("✅ User is confirmed as an admin");
+    } else {
+      console.log("❌ User is NOT an admin");
+    }
+    process.exit(isAdmin ? 0 : 1);
+  }
 
   try {
     console.log("Creating admin user...");
