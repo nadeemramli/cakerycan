@@ -20,6 +20,13 @@ import {
   LogOut,
   ChevronLeft,
   Menu,
+  DollarSign,
+  Compass,
+  FlaskConical,
+  BarChart3,
+  Building2,
+  Wallet,
+  Settings,
 } from "lucide-react";
 import {
   Tooltip,
@@ -38,6 +45,18 @@ const routes = [
         href: "/dashboard",
         color: "text-sky-500",
       },
+      {
+        label: "Ledger",
+        icon: DollarSign,
+        href: "/dashboard/ledger",
+        color: "text-emerald-500",
+      },
+      {
+        label: "Compass",
+        icon: Compass,
+        href: "/dashboard/compass",
+        color: "text-indigo-500",
+      },
     ],
   },
   {
@@ -55,31 +74,19 @@ const routes = [
         href: "/dashboard/delivery",
         color: "text-pink-700",
       },
-      {
-        label: "Route Planning",
-        icon: Map,
-        href: "/dashboard/route-planning",
-        color: "text-orange-700",
-      },
     ],
   },
   {
-    label: "Management",
+    label: "Products",
     routes: [
       {
-        label: "Database",
-        icon: Database,
-        href: "/dashboard/database",
-        color: "text-emerald-500",
+        label: "Development",
+        icon: FlaskConical,
+        href: "/dashboard/development",
+        color: "text-amber-600",
       },
       {
-        label: "Promotions",
-        icon: Tag,
-        href: "/dashboard/promotions",
-        color: "text-green-700",
-      },
-      {
-        label: "Menu & Recipes",
+        label: "Menu & Recipe",
         icon: UtensilsCrossed,
         href: "/dashboard/menu",
         color: "text-red-500",
@@ -89,6 +96,46 @@ const routes = [
         icon: Package,
         href: "/dashboard/inventory",
         color: "text-blue-700",
+      },
+    ],
+  },
+  {
+    label: "Customer",
+    routes: [
+      {
+        label: "Promotions",
+        icon: Tag,
+        href: "/dashboard/promotions",
+        color: "text-green-700",
+      },
+      {
+        label: "Performance",
+        icon: BarChart3,
+        href: "/dashboard/performance",
+        color: "text-purple-600",
+      },
+      {
+        label: "Database",
+        icon: Database,
+        href: "/dashboard/database",
+        color: "text-emerald-500",
+      },
+    ],
+  },
+  {
+    label: "Management",
+    routes: [
+      {
+        label: "Overhead",
+        icon: Building2,
+        href: "/dashboard/overhead",
+        color: "text-orange-600",
+      },
+      {
+        label: "Finance",
+        icon: Wallet,
+        href: "/dashboard/finance",
+        color: "text-cyan-600",
       },
     ],
   },
@@ -168,25 +215,41 @@ export function Sidebar() {
 
       {/* Footer */}
       <div className="border-t p-3">
-        <TooltipProvider delayDuration={0}>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Link
-                href="/logout"
-                className={cn(
-                  "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-accent hover:text-accent-foreground transition-colors",
-                  isCollapsed && "justify-center"
-                )}
-              >
-                <LogOut className="h-4 w-4" />
-                {!isCollapsed && <span>Logout</span>}
-              </Link>
-            </TooltipTrigger>
-            {isCollapsed && (
-              <TooltipContent side="right">Logout</TooltipContent>
-            )}
-          </Tooltip>
-        </TooltipProvider>
+        <div className="flex items-center justify-between">
+          <TooltipProvider delayDuration={0}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Link
+                  href="/logout"
+                  className={cn(
+                    "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-accent hover:text-accent-foreground transition-colors",
+                    isCollapsed && "justify-center"
+                  )}
+                >
+                  <LogOut className="h-4 w-4" />
+                  {!isCollapsed && <span>Logout</span>}
+                </Link>
+              </TooltipTrigger>
+              {isCollapsed && (
+                <TooltipContent side="right">Logout</TooltipContent>
+              )}
+            </Tooltip>
+          </TooltipProvider>
+
+          <TooltipProvider delayDuration={0}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Link
+                  href="/dashboard/settings"
+                  className="flex items-center rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-accent hover:text-accent-foreground transition-colors justify-center"
+                >
+                  <Settings className="h-4 w-4" />
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent side="right">Settings</TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
       </div>
     </div>
   );

@@ -109,7 +109,7 @@ function ProductsContent() {
           onValueChange={setActiveTab}
         >
           <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="products">Products & Recipes</TabsTrigger>
+            <TabsTrigger value="products">Proddsucts & Recipes</TabsTrigger>
             <TabsTrigger value="inventory">Inventory</TabsTrigger>
             <TabsTrigger value="suppliers">Suppliers</TabsTrigger>
             <TabsTrigger value="analytics">Analytics</TabsTrigger>

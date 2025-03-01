@@ -1,6 +1,6 @@
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 @layer base {
   :root {
@@ -91,12 +91,21 @@
 
   * {
     @apply border-border;
-    outline-color: hsl(var(--ring) / 0.5);
   }
 
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+@layer components {
+  .bg-popover {
+    background-color: hsl(var(--popover));
+  }
+  
+  .text-popover-foreground {
+    color: hsl(var(--popover-foreground));
   }
 }
 
@@ -107,6 +116,10 @@
 
   .outline-ring {
     outline-color: hsl(var(--ring));
+  }
+
+  .outline-ring-opacity-50 {
+    outline-color: hsl(var(--ring) / 0.5);
   }
 
   .transition-width {

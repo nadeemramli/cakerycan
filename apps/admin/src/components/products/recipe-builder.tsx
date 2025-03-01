@@ -14,9 +14,22 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { X, Plus, ArrowLeft, ArrowRight } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 interface RecipeBuilderProps {
   onClose: () => void;
+  recipeId?: string;
+  initialData?: {
+    name: string;
+    description: string;
+    category: string;
+    servingSize: string;
+    prepTime: string;
+    cookTime: string;
+    ingredients: Ingredient[];
+    steps: Step[];
+    developmentVersion?: number;
+  };
 }
 
 interface Ingredient {
@@ -24,6 +37,7 @@ interface Ingredient {
   name: string;
   quantity: string;
   unit: string;
+  cost?: number;
 }
 
 interface Step {
@@ -33,18 +47,25 @@ interface Step {
   tools: string[];
 }
 
-export function RecipeBuilder({ onClose }: RecipeBuilderProps) {
+export function RecipeBuilder({
+  onClose,
+  recipeId,
+  initialData,
+}: RecipeBuilderProps) {
   const [currentStep, setCurrentStep] = useState(1);
-  const [recipeData, setRecipeData] = useState({
-    name: "",
-    description: "",
-    category: "",
-    servingSize: "",
-    prepTime: "",
-    cookTime: "",
-    ingredients: [] as Ingredient[],
-    steps: [] as Step[],
-  });
+  const [recipeData, setRecipeData] = useState(
+    initialData || {
+      name: "",
+      description: "",
+      category: "",
+      servingSize: "",
+      prepTime: "",
+      cookTime: "",
+      ingredients: [] as Ingredient[],
+      steps: [] as Step[],
+      developmentVersion: undefined as number | undefined,
+    }
+  );
 
   const addIngredient = () => {
     setRecipeData((prev) => ({
@@ -56,6 +77,7 @@ export function RecipeBuilder({ onClose }: RecipeBuilderProps) {
           name: "",
           quantity: "",
           unit: "",
+          cost: 0,
         },
       ],
     }));
@@ -93,7 +115,7 @@ export function RecipeBuilder({ onClose }: RecipeBuilderProps) {
   const updateIngredient = (
     id: string,
     field: keyof Ingredient,
-    value: string
+    value: string | number
   ) => {
     setRecipeData((prev) => ({
       ...prev,
@@ -114,6 +136,18 @@ export function RecipeBuilder({ onClose }: RecipeBuilderProps) {
         step.id === id ? { ...step, [field]: value } : step
       ),
     }));
+  };
+
+  const handleSave = () => {
+    // Save recipe data and sync with development if needed
+    if (recipeId) {
+      // Update existing recipe
+      console.log("Updating recipe:", recipeId, recipeData);
+    } else {
+      // Create new recipe
+      console.log("Creating new recipe:", recipeData);
+    }
+    onClose();
   };
 
   return (
@@ -165,6 +199,17 @@ export function RecipeBuilder({ onClose }: RecipeBuilderProps) {
                   placeholder="Enter recipe name"
                 />
               </div>
+              {recipeData.developmentVersion && (
+                <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+                  <Badge variant="secondary">
+                    Development v{recipeData.developmentVersion}
+                  </Badge>
+                  <span>
+                    This recipe is synced with development version{" "}
+                    {recipeData.developmentVersion}
+                  </span>
+                </div>
+              )}
               <div className="grid gap-2">
                 <Label htmlFor="description">Description</Label>
                 <Textarea
@@ -241,15 +286,27 @@ export function RecipeBuilder({ onClose }: RecipeBuilderProps) {
       {currentStep === 2 && (
         <Card>
           <CardContent className="space-y-4 pt-6">
+            <div className="flex justify-between items-center">
+              <h3 className="text-lg font-medium">Ingredients</h3>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={addIngredient}
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Add Ingredient
+              </Button>
+            </div>
             <div className="space-y-4">
               {recipeData.ingredients.map((ingredient) => (
                 <div
                   key={ingredient.id}
                   className="flex items-center gap-4 p-4 border rounded-lg"
                 >
-                  <div className="flex-1 grid grid-cols-3 gap-4">
-                    <div className="grid gap-2">
-                      <Label>Ingredient Name</Label>
+                  <div className="flex-1 grid grid-cols-4 gap-4">
+                    <div className="col-span-2">
+                      <Label>Name</Label>
                       <Input
                         value={ingredient.name}
                         onChange={(e) =>
@@ -259,10 +316,10 @@ export function RecipeBuilder({ onClose }: RecipeBuilderProps) {
                             e.target.value
                           )
                         }
-                        placeholder="e.g., All-purpose flour"
+                        placeholder="Ingredient name"
                       />
                     </div>
-                    <div className="grid gap-2">
+                    <div>
                       <Label>Quantity</Label>
                       <Input
                         value={ingredient.quantity}
@@ -273,10 +330,10 @@ export function RecipeBuilder({ onClose }: RecipeBuilderProps) {
                             e.target.value
                           )
                         }
-                        placeholder="e.g., 500"
+                        placeholder="Amount"
                       />
                     </div>
-                    <div className="grid gap-2">
+                    <div>
                       <Label>Unit</Label>
                       <Select
                         value={ingredient.unit}
@@ -293,27 +350,20 @@ export function RecipeBuilder({ onClose }: RecipeBuilderProps) {
                           <SelectItem value="ml">Milliliters (ml)</SelectItem>
                           <SelectItem value="l">Liters (l)</SelectItem>
                           <SelectItem value="pcs">Pieces</SelectItem>
-                          <SelectItem value="tbsp">
-                            Tablespoons (tbsp)
-                          </SelectItem>
-                          <SelectItem value="tsp">Teaspoons (tsp)</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
                   </div>
                   <Button
+                    type="button"
                     variant="ghost"
                     size="icon"
                     onClick={() => removeIngredient(ingredient.id)}
                   >
-                    <X className="h-4 w-4" />
+                    <X className="w-4 h-4" />
                   </Button>
                 </div>
               ))}
-              <Button onClick={addIngredient} variant="outline">
-                <Plus className="h-4 w-4 mr-2" />
-                Add Ingredient
-              </Button>
             </div>
           </CardContent>
         </Card>
@@ -323,28 +373,40 @@ export function RecipeBuilder({ onClose }: RecipeBuilderProps) {
       {currentStep === 3 && (
         <Card>
           <CardContent className="space-y-4 pt-6">
+            <div className="flex justify-between items-center">
+              <h3 className="text-lg font-medium">Recipe Steps</h3>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={addStep}
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Add Step
+              </Button>
+            </div>
             <div className="space-y-4">
               {recipeData.steps.map((step, index) => (
                 <div
                   key={step.id}
                   className="flex items-start gap-4 p-4 border rounded-lg"
                 >
-                  <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center shrink-0">
+                  <div className="flex-none w-8 h-8 rounded-full bg-muted flex items-center justify-center">
                     {index + 1}
                   </div>
-                  <div className="flex-1 grid gap-4">
-                    <div className="grid gap-2">
-                      <Label>Step Description</Label>
+                  <div className="flex-1 space-y-4">
+                    <div>
+                      <Label>Description</Label>
                       <Textarea
                         value={step.description}
                         onChange={(e) =>
                           updateStep(step.id, "description", e.target.value)
                         }
-                        placeholder="Describe this step..."
+                        placeholder="Describe this step"
                       />
                     </div>
                     <div className="grid grid-cols-2 gap-4">
-                      <div className="grid gap-2">
+                      <div>
                         <Label>Duration (minutes)</Label>
                         <Input
                           type="number"
@@ -352,38 +414,40 @@ export function RecipeBuilder({ onClose }: RecipeBuilderProps) {
                           onChange={(e) =>
                             updateStep(step.id, "duration", e.target.value)
                           }
-                          placeholder="e.g., 10"
+                          placeholder="Duration"
                         />
                       </div>
-                      <div className="grid gap-2">
-                        <Label>Tools/Equipment</Label>
-                        <Input
-                          value={step.tools.join(", ")}
-                          onChange={(e) =>
-                            updateStep(
-                              step.id,
-                              "tools",
-                              e.target.value.split(",").map((t) => t.trim())
-                            )
+                      <div>
+                        <Label>Tools Required</Label>
+                        <Select
+                          value={step.tools[0] || ""}
+                          onValueChange={(value) =>
+                            updateStep(step.id, "tools", [value])
                           }
-                          placeholder="e.g., Mixer, Bowl"
-                        />
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select tool" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="mixer">Stand Mixer</SelectItem>
+                            <SelectItem value="oven">Oven</SelectItem>
+                            <SelectItem value="whisk">Whisk</SelectItem>
+                            <SelectItem value="spatula">Spatula</SelectItem>
+                          </SelectContent>
+                        </Select>
                       </div>
                     </div>
                   </div>
                   <Button
+                    type="button"
                     variant="ghost"
                     size="icon"
                     onClick={() => removeStep(step.id)}
                   >
-                    <X className="h-4 w-4" />
+                    <X className="w-4 h-4" />
                   </Button>
                 </div>
               ))}
-              <Button onClick={addStep} variant="outline">
-                <Plus className="h-4 w-4 mr-2" />
-                Add Step
-              </Button>
             </div>
           </CardContent>
         </Card>
@@ -391,40 +455,31 @@ export function RecipeBuilder({ onClose }: RecipeBuilderProps) {
 
       {/* Navigation buttons */}
       <div className="flex justify-between pt-6">
-        <div className="flex gap-2">
-          <Button variant="outline" onClick={onClose}>
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => currentStep > 1 && setCurrentStep(currentStep - 1)}
+          disabled={currentStep === 1}
+        >
+          <ArrowLeft className="w-4 h-4 mr-2" />
+          Previous
+        </Button>
+        <div className="space-x-2">
+          <Button type="button" variant="outline" onClick={onClose}>
             Cancel
           </Button>
-          {currentStep > 1 && (
+          {currentStep === 3 ? (
+            <Button onClick={handleSave}>Save Recipe</Button>
+          ) : (
             <Button
-              variant="outline"
-              onClick={() => setCurrentStep((prev) => prev - 1)}
+              type="button"
+              onClick={() => currentStep < 3 && setCurrentStep(currentStep + 1)}
             >
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Previous
+              Next
+              <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
           )}
         </div>
-        <Button
-          onClick={() => {
-            if (currentStep < 3) {
-              setCurrentStep((prev) => prev + 1);
-            } else {
-              // Handle form submission
-              console.log("Recipe data:", recipeData);
-              onClose();
-            }
-          }}
-        >
-          {currentStep < 3 ? (
-            <>
-              Next
-              <ArrowRight className="h-4 w-4 ml-2" />
-            </>
-          ) : (
-            "Create Recipe"
-          )}
-        </Button>
       </div>
     </div>
   );
