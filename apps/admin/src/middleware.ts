@@ -37,8 +37,15 @@ export async function middleware(request: NextRequest) {
     if (userError || !user) {
       // Clear any existing session
       await supabase.auth.signOut();
+      // If at root path, redirect to login
       const redirectUrl = new URL('/login', request.url);
       return NextResponse.redirect(redirectUrl);
+    }
+
+    // For root path, redirect to dashboard if authenticated
+    if (pathname === '/') {
+      const dashboardUrl = new URL('/dashboard', request.url);
+      return NextResponse.redirect(dashboardUrl);
     }
 
     // Check for navigation state in cookies
