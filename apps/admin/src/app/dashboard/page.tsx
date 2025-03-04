@@ -1,65 +1,60 @@
-import { Metadata } from "next";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+"use client";
 
-export const metadata: Metadata = {
-  title: "Dashboard",
-  description: "Example dashboard app built using the components.",
-};
+import { PageContainer } from "@/components/layout/page-container";
+import { MetricGrid } from "@/components/dashboard/metric-grid";
+import { ChartBuilder } from "@/components/dashboard/chart-builder";
+import { CustomChartComponent } from "@/components/dashboard/custom-chart";
+import { useDashboard } from "@/hooks/use-dashboard";
+import { Button } from "@/components/ui/button";
+import { useState } from "react";
 
 export default function DashboardPage() {
+  const {
+    metrics,
+    preferences,
+    loading,
+    onPreferencesChange,
+    onAddCustomChart,
+    onRemoveCustomChart,
+  } = useDashboard();
+  const [showChartBuilder, setShowChartBuilder] = useState(false);
+
   return (
-    <div className="flex-1 space-y-4 p-8 pt-6">
-      <div className="flex items-center justify-between space-y-2">
-        <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
+    <PageContainer
+      title="Dashboard"
+      actions={
+        <Button onClick={() => setShowChartBuilder(true)}>
+          Create Custom Chart
+        </Button>
+      }
+    >
+      <div className="space-y-8">
+        <MetricGrid
+          metrics={metrics || {}}
+          preferences={preferences}
+          isLoading={loading}
+          onPreferencesChange={onPreferencesChange}
+        />
+
+        {preferences.customCharts.length > 0 && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {preferences.customCharts.map((chart) => (
+              <CustomChartComponent
+                key={chart.id}
+                chart={chart}
+                data={metrics || {}}
+                onRemove={() => onRemoveCustomChart(chart.id)}
+              />
+            ))}
+          </div>
+        )}
+
+        <ChartBuilder
+          open={showChartBuilder}
+          onOpenChange={setShowChartBuilder}
+          onSave={onAddCustomChart}
+        />
       </div>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">$15,231.89</div>
-            <p className="text-xs text-muted-foreground">
-              +20.1% from last month
-            </p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active Orders</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">+2350</div>
-            <p className="text-xs text-muted-foreground">
-              +180.1% from last month
-            </p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Inventory</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">+12,234</div>
-            <p className="text-xs text-muted-foreground">
-              +19% from last month
-            </p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Active Customers
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">+573</div>
-            <p className="text-xs text-muted-foreground">
-              +201 since last hour
-            </p>
-          </CardContent>
-        </Card>
-      </div>
-    </div>
+    </PageContainer>
   );
 }

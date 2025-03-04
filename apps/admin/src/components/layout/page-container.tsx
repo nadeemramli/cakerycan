@@ -1,59 +1,27 @@
 "use client";
 
 import { ReactNode } from "react";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
 
 interface PageContainerProps {
-  children: ReactNode;
   title: string;
-  breadcrumbs: Array<{
-    title: string;
-    href?: string;
-  }>;
+  actions?: ReactNode;
+  children: ReactNode;
 }
 
 export function PageContainer({
-  children,
   title,
-  breadcrumbs,
+  actions,
+  children,
 }: PageContainerProps) {
   return (
-    <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
-      <div className="space-y-4">
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink href="/dashboard">Dashboard</BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            {breadcrumbs.map((crumb, index) => (
-              <BreadcrumbItem key={index}>
-                {index === breadcrumbs.length - 1 ? (
-                  <BreadcrumbPage>{crumb.title}</BreadcrumbPage>
-                ) : (
-                  <>
-                    <BreadcrumbLink href={crumb.href}>
-                      {crumb.title}
-                    </BreadcrumbLink>
-                    <BreadcrumbSeparator />
-                  </>
-                )}
-              </BreadcrumbItem>
-            ))}
-          </BreadcrumbList>
-        </Breadcrumb>
-        <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-bold tracking-tight">{title}</h1>
-        </div>
+    <div className="h-full flex-1 flex-col space-y-8 px-8 py-6">
+      <div className="flex items-center justify-between space-x-2">
+        <h1 className="text-2xl font-semibold tracking-tight">{title}</h1>
+        {actions && (
+          <div className="flex items-center space-x-2">{actions}</div>
+        )}
       </div>
-      {children}
+      <div className="flex-1">{children}</div>
     </div>
   );
 }

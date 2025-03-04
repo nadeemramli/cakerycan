@@ -3,13 +3,15 @@
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { ChevronRight, Home } from "lucide-react";
+import { Breadcrumb as BreadcrumbPrimitive } from "@/components/ui/breadcrumb";
+import { SearchParamsWrapper } from "@/components/dashboard/search-params-wrapper";
 
 const getTitleFromPath = (path: string): string => {
   const formatted = path.charAt(0).toUpperCase() + path.slice(1);
   return formatted.replace(/-/g, " ");
 };
 
-export function Breadcrumb() {
+function BreadcrumbContent() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const paths = pathname.split("/").filter(Boolean);
@@ -55,5 +57,13 @@ export function Breadcrumb() {
         );
       })}
     </div>
+  );
+}
+
+export function Breadcrumb() {
+  return (
+    <SearchParamsWrapper>
+      <BreadcrumbContent />
+    </SearchParamsWrapper>
   );
 }

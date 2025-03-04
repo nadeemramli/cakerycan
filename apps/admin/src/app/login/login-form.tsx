@@ -8,8 +8,9 @@ import { Label } from "@/components/ui/label";
 import { useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { useAuth } from "@/lib/auth-context";
+import { SearchParamsWrapper } from "@/components/dashboard/search-params-wrapper";
 
-export function LoginForm() {
+function LoginFormContent() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -82,5 +83,13 @@ export function LoginForm() {
         </form>
       </CardContent>
     </Card>
+  );
+}
+
+export function LoginForm() {
+  return (
+    <SearchParamsWrapper>
+      <LoginFormContent />
+    </SearchParamsWrapper>
   );
 }

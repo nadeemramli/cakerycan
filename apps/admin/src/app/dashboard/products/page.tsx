@@ -12,6 +12,7 @@ import { InventoryManager } from "@/components/products/inventory-manager";
 import { SupplierManager } from "@/components/products/supplier-manager";
 import { AnalyticsDashboard } from "@/components/products/analytics-dashboard";
 import { toast } from "sonner";
+import { SearchParamsWrapper } from "@/components/dashboard/search-params-wrapper";
 
 function ProductsContent() {
   const router = useRouter();
@@ -180,8 +181,8 @@ function ProductsContent() {
 
 export default function ProductsPage() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <SearchParamsWrapper>
       <ProductsContent />
-    </Suspense>
+    </SearchParamsWrapper>
   );
 }

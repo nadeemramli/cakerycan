@@ -86,62 +86,39 @@ export default function MenuPage() {
   };
 
   return (
-    <PageContainer
-      title="Menu & Recipes"
-      breadcrumbs={[
-        {
-          title: "Menu",
-          href: "/dashboard/menu",
-        },
-      ]}
-    >
-      <div className="flex items-center justify-between space-y-2">
-        <div />
-        <Button onClick={() => setShowRecipeBuilder(true)}>
-          <Plus className="w-4 h-4 mr-2" />
-          Add New Recipe
-        </Button>
-      </div>
+    <div className="h-full flex flex-col">
+      <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
+        <div className="flex items-center justify-between">
+          <h1 className="text-3xl font-bold">Menu Management</h1>
+          <Button onClick={() => setShowRecipeBuilder(true)}>
+            <Plus className="w-4 h-4 mr-2" />
+            Add New Recipe
+          </Button>
+        </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Products & Recipes</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <ProductList
-            onEdit={handleEdit}
-            onDuplicate={handleDuplicate}
-            onDelete={handleDelete}
-            onView={handleView}
-          />
-        </CardContent>
-      </Card>
-
-      <Dialog
-        open={showRecipeBuilder}
-        onOpenChange={(open) => {
-          setShowRecipeBuilder(open);
-          if (!open) setEditingRecipeId(null);
-        }}
-      >
-        <DialogContent className="max-w-4xl max-h-[90vh]">
-          <DialogHeader>
-            <DialogTitle>
-              {editingRecipeId ? "Edit Recipe" : "New Recipe"}
-            </DialogTitle>
-          </DialogHeader>
+        {showRecipeBuilder ? (
           <RecipeBuilder
-            recipeId={editingRecipeId || undefined}
-            initialData={
-              editingRecipeId ? getRecipeData(editingRecipeId) : undefined
-            }
             onClose={() => {
               setShowRecipeBuilder(false);
               setEditingRecipeId(null);
             }}
           />
-        </DialogContent>
-      </Dialog>
+        ) : (
+          <Card>
+            <CardHeader>
+              <CardTitle>Products & Recipes</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ProductList
+                onEdit={handleEdit}
+                onDuplicate={handleDuplicate}
+                onDelete={handleDelete}
+                onView={handleView}
+              />
+            </CardContent>
+          </Card>
+        )}
+      </div>
 
       <MenuDetailDialog
         menuId={viewingRecipeId || ""}
@@ -154,6 +131,6 @@ export default function MenuPage() {
           handleEdit(id);
         }}
       />
-    </PageContainer>
+    </div>
   );
 }

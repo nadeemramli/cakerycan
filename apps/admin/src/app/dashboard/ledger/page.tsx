@@ -1,31 +1,92 @@
 "use client";
 
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { PageContainer } from "@/components/layout/page-container";
+import { IncomeStatement } from "@/components/ledger/income-statement";
+import { CashFlow } from "@/components/ledger/cash-flow";
+import { BalanceSheet } from "@/components/ledger/balance-sheet";
+import { DateRangeSelector } from "@/components/ledger/date-range-selector";
+import { DateRange } from "react-day-picker";
 
 export default function LedgerPage() {
+  const [primaryDateRange, setPrimaryDateRange] = useState<
+    DateRange | undefined
+  >({
+    from: new Date(),
+    to: undefined,
+  });
+  const [comparisonDateRange, setComparisonDateRange] = useState<
+    DateRange | undefined
+  >();
+  const [showComparison, setShowComparison] = useState(false);
+
   return (
-    <div className="h-full flex flex-col">
-      <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
-        <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-bold">Ledger Overview</h1>
-        </div>
-
-        <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
-          <Card>
-            <CardHeader>
-              <CardTitle>Current Financial Status</CardTitle>
-            </CardHeader>
-            <CardContent>{/* Add financial status content here */}</CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Historical Data</CardTitle>
-            </CardHeader>
-            <CardContent>{/* Add historical data content here */}</CardContent>
-          </Card>
-        </div>
+    <PageContainer title="Financial Ledger">
+      <div className="space-y-4">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle>Financial Overview</CardTitle>
+            <DateRangeSelector
+              primaryDateRange={primaryDateRange}
+              setPrimaryDateRange={setPrimaryDateRange}
+              comparisonDateRange={comparisonDateRange}
+              setComparisonDateRange={setComparisonDateRange}
+              showComparison={showComparison}
+              setShowComparison={setShowComparison}
+            />
+          </CardHeader>
+          <CardContent>
+            <Tabs defaultValue="income" className="w-full">
+              <TabsList className="grid w-full grid-cols-3 mb-6">
+                <TabsTrigger
+                  value="income"
+                  className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                >
+                  Income Statement
+                </TabsTrigger>
+                <TabsTrigger
+                  value="cashflow"
+                  className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground "
+                >
+                  Cash Flow
+                </TabsTrigger>
+                <TabsTrigger
+                  value="balance"
+                  className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                >
+                  Balance Sheet
+                </TabsTrigger>
+              </TabsList>
+              <TabsContent value="income" className="space-y-4">
+                <IncomeStatement
+                  primaryDateRange={primaryDateRange}
+                  comparisonDateRange={
+                    showComparison ? comparisonDateRange : undefined
+                  }
+                />
+              </TabsContent>
+              <TabsContent value="cashflow" className="space-y-4">
+                <CashFlow
+                  primaryDateRange={primaryDateRange}
+                  comparisonDateRange={
+                    showComparison ? comparisonDateRange : undefined
+                  }
+                />
+              </TabsContent>
+              <TabsContent value="balance" className="space-y-4">
+                <BalanceSheet
+                  primaryDateRange={primaryDateRange}
+                  comparisonDateRange={
+                    showComparison ? comparisonDateRange : undefined
+                  }
+                />
+              </TabsContent>
+            </Tabs>
+          </CardContent>
+        </Card>
       </div>
-    </div>
+    </PageContainer>
   );
 }

@@ -1,33 +1,56 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { PageContainer } from "@/components/layout/page-container";
+import { PerformanceMetrics } from "@/components/compass/performance-metrics";
+import { VarianceAnalysis } from "@/components/compass/variance-analysis";
+import { ForecastComparison } from "@/components/compass/forecast-comparison";
+import { ActionRecommendations } from "@/components/compass/action-recommendations";
 
 export default function CompassPage() {
   return (
-    <div className="h-full flex flex-col">
-      <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
-        <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-bold">Business Compass</h1>
-        </div>
+    <PageContainer title="Business Compass">
+      <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
+        {/* Performance Metrics */}
+        <Card className="col-span-1 md:col-span-2">
+          <CardHeader>
+            <CardTitle>Performance Overview</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <PerformanceMetrics />
+          </CardContent>
+        </Card>
 
-        <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
-          <Card>
-            <CardHeader>
-              <CardTitle>Goals Tracking</CardTitle>
-            </CardHeader>
-            <CardContent>{/* Add goals tracking content here */}</CardContent>
-          </Card>
+        {/* Variance Analysis */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Variance Analysis</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <VarianceAnalysis />
+          </CardContent>
+        </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle>Performance Metrics</CardTitle>
-            </CardHeader>
-            <CardContent>
-              {/* Add performance metrics content here */}
-            </CardContent>
-          </Card>
-        </div>
+        {/* Forecast vs Actual */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Forecast Comparison</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ForecastComparison />
+          </CardContent>
+        </Card>
+
+        {/* Action Recommendations */}
+        <Card className="col-span-1 md:col-span-2">
+          <CardHeader>
+            <CardTitle>Recommended Actions</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ActionRecommendations />
+          </CardContent>
+        </Card>
       </div>
-    </div>
+    </PageContainer>
   );
 }

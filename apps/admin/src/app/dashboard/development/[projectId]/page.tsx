@@ -161,36 +161,14 @@ export default function ProjectPage({ params }: ProjectPageProps) {
 
   if (isLoading || !project) {
     return (
-      <PageContainer
-        title="Loading..."
-        breadcrumbs={[
-          {
-            title: "Development",
-            href: "/dashboard/development",
-          },
-          {
-            title: "Loading Project...",
-          },
-        ]}
-      >
+      <PageContainer title="Loading...">
         <div>Loading...</div>
       </PageContainer>
     );
   }
 
   return (
-    <PageContainer
-      title={project.name}
-      breadcrumbs={[
-        {
-          title: "Development",
-          href: "/dashboard/development",
-        },
-        {
-          title: project.name,
-        },
-      ]}
-    >
+    <PageContainer title={project.name}>
       <div className="flex items-center gap-2 mt-1">
         <Badge variant="outline">{project.baseRecipe || "New Recipe"}</Badge>
         <Badge
